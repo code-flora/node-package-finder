@@ -1,32 +1,52 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
+import KeywordButton from './KeywordButton'
 
 export interface IResultCardProps {
+    name: string;
+    version: string;
+    description: string;
+    date: any;
+    publisher: string;
+    keywords: [];
 }
 
 export default function ResultCard(props: IResultCardProps) {
+    const { name, version, description, date, publisher, keywords } = props;
+
+    //render keyword buttons
+    let keywordButtons;
+    if (keywords) {
+        keywordButtons = (
+            keywords.map((keyword: string) => {
+                return (
+                    <KeywordButton keyword={keyword} key={keyword} />
+                )
+            })
+        )
+    }
+
+    // const keywordButtons = (
+    //     <KeywordButton keyword={'react'} />
+    // )
+
     return (
         <Container>
             <StyledPaper elevation={2}>
-                <PackageName>react-router-dom</PackageName>
-                <PackageDesc>Lorem ipsum dolor sit amet consectetur adipisicing elit.</PackageDesc>
+                <PackageName>{name}</PackageName>
+                {description ? (<PackageDesc>{description}</PackageDesc>) : null}
                 <UploadInfoBar>
-                    <UserName>MonkeyBanana</UserName>&nbsp;
-                    <UploadVersion>published v6.0.2</UploadVersion>&nbsp;•&nbsp;
-                    <UploadDate>on 22th June 2022</UploadDate>
+                    <UserName>{publisher}</UserName>&nbsp;
+                    <UploadVersion>published v{version}</UploadVersion>&nbsp;•&nbsp;
+                    <UploadDate>on {date}</UploadDate>
                 </UploadInfoBar>
-                <KeywordsBar>
-                    <Button
-                        sx={{ backgroundColor: 'var(--sub-alt-color)', color: 'var(--main-color)', marginRight: '5px', fontFamily: 'var(--code-font)', letterSpacing: '0.3px', textTransform: 'none' }}
-                        size="small"
-                    >react</Button>
-                    <Button
-                        sx={{ backgroundColor: 'var(--sub-alt-color)', color: 'var(--main-color)', marginRight: '5px', fontFamily: 'var(--code-font)', letterSpacing: '0.3px', textTransform: 'none' }}
-                        size="small"
-                    >router</Button>
-                </KeywordsBar>
+                {keywords ? (
+                    <KeywordsBar>
+                        {keywordButtons}
+                    </KeywordsBar>
+                ) : null}
+
             </StyledPaper>
         </Container>
     );
@@ -92,7 +112,6 @@ const UploadVersion = styled.span`
 `
 
 const KeywordsBar = styled(PackageDesc)`
-    padding-top: 10px;
     width: 100%;
     border-top: 2px solid var(--sub-alt-color);
 `

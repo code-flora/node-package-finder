@@ -9,7 +9,7 @@ function App() {
   //Set up states
   // for query, to be shared with Results and Package
   const [query, setQuery] = useState<null | string>(null);
-  const [querySubmitted, setQuerySubmitted] = useState<boolean>(false);
+  const [querySubmitted, setQuerySubmitted] = useState<string | null>(null);
 
   // for results after returned from API
   const [searchResults, setSearchResults] = useState<null | string>(null);
@@ -17,15 +17,16 @@ function App() {
   // for specific package after returned from API
   const [packageInfo, setPackageInfo] = useState<null | string>(null);
 
+  const bundle = { query, setQuery, querySubmitted, setQuerySubmitted, searchResults, setSearchResults, packageInfo, setPackageInfo }
+
   return (
     <div className="App">
       <BrowserRouter>
-        <Home query={query} setQuery={setQuery} querySubmitted={querySubmitted} setQuerySubmitted={setQuerySubmitted} />
+        <Home bundle={bundle} />
         <Routes>
-          <Route path="/search" element={<Results query={query} setQuery={setQuery} querySubmitted={querySubmitted} setQuerySubmitted={setQuerySubmitted} />} />
-          <Route path="/package/:id" element={<Package query={query} setQuery={setQuery} querySubmitted={querySubmitted} setQuerySubmitted={setQuerySubmitted} />} />
-
-
+          <Route path="/" element={null} />
+          <Route path="search" element={<Results bundle={bundle} />} />
+          <Route path="package/:id" element={<Package bundle={bundle} />} />
         </Routes>
       </BrowserRouter>
     </div>

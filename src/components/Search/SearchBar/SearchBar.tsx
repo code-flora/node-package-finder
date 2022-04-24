@@ -5,12 +5,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import styledC from 'styled-components';
 import { useNavigate } from "react-router-dom";
 
+
 export interface ISearchBarProps {
     defaultValue: string | undefined;
-    query: any;
-    setQuery: any;
-    querySubmitted: any;
-    setQuerySubmitted: any;
+    bundle: any;
 }
 
 export default function SearchBar(props: ISearchBarProps) {
@@ -18,7 +16,7 @@ export default function SearchBar(props: ISearchBarProps) {
     let navigate = useNavigate();
 
     // Get query and setQuery from props
-    const { query, setQuery, querySubmitted, setQuerySubmitted } = props;
+    const { query, setQuery, querySubmitted, setQuerySubmitted, searchResults, setSearchResults } = props.bundle;
 
     // Set up controlled input
     function handleInputChange(event: any) {
@@ -28,7 +26,7 @@ export default function SearchBar(props: ISearchBarProps) {
     function handleSubmit(event: any) {
         event.preventDefault();
         // set query submitted state to true to change home page to header
-        setQuerySubmitted(true);
+        setQuerySubmitted(query);
         // navigate to search results page with query
         navigate(`/search?q=${query}`);
     }

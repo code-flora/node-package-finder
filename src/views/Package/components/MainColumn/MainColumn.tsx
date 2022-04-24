@@ -31,11 +31,11 @@ export default function MainColumn(props: IMainColumnProps) {
 }
 
 const Container = styled.section`
-    padding: 20px;
+    padding-right: 20px;
     width: 70%;
 
     @media (max-width: 1000px) {
-        padding: 20px 10px;
+        padding: 20px 0px;
         width: 100%;
     }
 

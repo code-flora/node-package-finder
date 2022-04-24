@@ -5,14 +5,11 @@ import MainColumn from './components/MainColumn/MainColumn';
 import SideColumn from './components/SideColumn/SideColumn';
 
 export interface IPackageProps {
-    query: any;
-    setQuery: any;
-    querySubmitted: any;
-    setQuerySubmitted: any;
+    bundle: any;
 }
 
 export default function Package(props: IPackageProps) {
-    const { setQuerySubmitted } = props;
+    const { setQuerySubmitted } = props.bundle;
 
     //ensure homepage is header sized if getting here via direct url
     React.useEffect(() => {
@@ -40,7 +37,7 @@ export default function Package(props: IPackageProps) {
 const Container = styled.div`
     padding: 10px 20px;
     width: 100vw;
-    min-height: 100vh;
+    min-height: calc(100vh-70px);
     display: flex;
     flex-direction: column;
     align-items: center;
