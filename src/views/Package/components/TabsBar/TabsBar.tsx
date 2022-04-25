@@ -2,6 +2,7 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { TSpecificPackage } from '../../../../utils/APITypesDeclaration';
 
 import styled from 'styled-components';
 
@@ -9,10 +10,23 @@ import styled from 'styled-components';
 export interface ITabsBarProps {
     info: any;
     versionsCount: number;
+    value: number;
+    setValue: React.Dispatch<React.SetStateAction<number>>;
+    handleChange: (event: React.SyntheticEvent, newValue: number) => void;
 }
 
 export default function TabsBar(props: ITabsBarProps) {
-    const { info, versionsCount } = props;
+    // Get props
+    const { info, versionsCount, value, setValue, handleChange } = props;
+
+    // aria stuff
+    function a11yProps(index: number) {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
+
     // counts for dependencies and versions
     let depCount, devDepCount;
     if (info.dependencies) {
@@ -27,12 +41,6 @@ export default function TabsBar(props: ITabsBarProps) {
     // Set media query to change tabs bar display
     const smallScreen = useMediaQuery('(max-width: 600px)');
 
-    const [value, setValue] = React.useState('read-me');
-
-    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-        setValue(newValue);
-    };
-
     return (
         <StyledTabs
             value={value}
@@ -40,9 +48,9 @@ export default function TabsBar(props: ITabsBarProps) {
             aria-label="Secondary Tabs"
             orientation={smallScreen ? "vertical" : undefined}
         >
-            <Tab value="read-me" label="Readme" className="tab-style" />
-            <Tab value="dependencies" label={`${depCount + devDepCount} Dependencies`} />
-            <Tab value="versions" label={`${versionsCount} Versions`} />
+            <Tab label="Readme" className="tab-style" {...a11yProps(0)} />
+            <Tab label={`${depCount + devDepCount} Dependencies`} {...a11yProps(1)} />
+            <Tab label={`${versionsCount} Versions`} {...a11yProps(2)} />
         </StyledTabs>
     );
 }

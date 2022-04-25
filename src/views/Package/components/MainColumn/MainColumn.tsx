@@ -1,4 +1,4 @@
-import * as React from 'react';
+import TabPanel from '../TabPanel/TabPanel';
 import styled from 'styled-components';
 import parse from 'html-react-parser';
 import { marked } from 'marked';
@@ -6,11 +6,13 @@ import { marked } from 'marked';
 export interface IMainColumnProps {
     info: any;
     readmeData: string | null;
+    value: number;
 }
 
 export default function MainColumn(props: IMainColumnProps) {
     // Get props and declare variables for future rendering
-    const { info, readmeData } = props;
+    const { info, readmeData, value } = props;
+
     let renderDependencies, renderDevDependencies, renderReadme;
 
     //render dependencies
@@ -32,6 +34,7 @@ export default function MainColumn(props: IMainColumnProps) {
         })
     }
 
+    // render Readme data
     if (readmeData) {
         //parse markdown to html
         let markdownToHtml = marked.parse(readmeData)
@@ -45,21 +48,29 @@ export default function MainColumn(props: IMainColumnProps) {
 
     return (
         <Container>
-            <ReadMe>
-                {readmeData ? renderReadme : noReadmeData}
-            </ReadMe>
-            <Dependencies>
-                <h2>Dependencies</h2>
-                <ul>{renderDependencies}</ul>
+            <TabPanel value={value} index={0}>
+                <ReadMe>
+                    {readmeData ? renderReadme : noReadmeData}
+                </ReadMe>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+                <Dependencies>
+                    <h2>Dependencies</h2>
+                    <ul>{renderDependencies}</ul>
 
-                {info.devDependencies ? (
-                    <>
-                        <h2>Dev Dependencies</h2>
-                        <ul>{renderDevDependencies}</ul>
-                    </>
-                ) : null}
-
-            </Dependencies>
+                    {info.devDependencies ? (
+                        <>
+                            <h2>Dev Dependencies</h2>
+                            <ul>{renderDevDependencies}</ul>
+                        </>
+                    ) : null}
+                </Dependencies>
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+                <Versions>
+                    Under Construction
+                </Versions>
+            </TabPanel>
         </Container >
     );
 }
@@ -140,4 +151,6 @@ const Dependencies = styled.div`
         display: inline;
     }
 `
+const Versions = styled.div`
 
+`

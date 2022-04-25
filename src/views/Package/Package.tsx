@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { StateContextType, StateContext } from '../../context/stateContext';
 import styled from 'styled-components';
 import { useParams } from "react-router-dom";
@@ -10,12 +10,21 @@ import useFetchSpecificPackage from '../../utils/FetchHooks/useFetchSpecificPack
 import convertDateToString from '../../utils/Conversion/convertDateToString';
 import Loading from '../../components/StatePages/Loading/Loading';
 import Error from '../../components/StatePages/Error/Error';
+import { TSpecificPackage } from '../../utils/APITypesDeclaration'
 
 export interface IPackageProps {
 
 }
 
 export default function Package(props: IPackageProps) {
+    // Set states for tab and panels
+    const [value, setValue] = useState<number>(0);
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    }
+
+
     //Hooks
     let params = useParams();
 
@@ -38,7 +47,7 @@ export default function Package(props: IPackageProps) {
     }
 
     // FETCH DATA
-    const { data, loading, error } = useFetchSpecificPackage(name, version);
+    const { data, loading, error }: { data: TSpecificPackage, loading: boolean, error: [] | null } = useFetchSpecificPackage(name, version);
     const { metaData, metaLoading, metaError } = useFetchMeta(name);
 
     // Getting content to be rendered/passed
@@ -66,9 +75,9 @@ export default function Package(props: IPackageProps) {
                     v{data.version}{packageInfo.date ? (`, Published ${date}`) : null}
                 </PackageDetails>
             </TitleBar>
-            <TabsBar info={data} versionsCount={versionsCount} />
+            <TabsBar info={data} versionsCount={versionsCount} handleChange={handleChange} value={value} setValue={setValue} />
             <ContentWrap>
-                <MainColumn info={data} readmeData={readme} />
+                <MainColumn info={data} readmeData={readme} value={value} />
                 <SideColumn info={data} />
             </ContentWrap>
         </Container>
