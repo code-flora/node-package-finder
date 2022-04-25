@@ -1,22 +1,20 @@
-import * as React from 'react';
+import { useContext } from 'react';
+import { StateContextType, StateContext } from '../../../context/stateContext';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import styledC from 'styled-components';
 import { useNavigate } from "react-router-dom";
 
-
 export interface ISearchBarProps {
-    defaultValue: string | undefined;
-    bundle: any;
 }
 
 export default function SearchBar(props: ISearchBarProps) {
     //hooks
     let navigate = useNavigate();
 
-    // Get query and setQuery from props
-    const { query, setQuery, querySubmitted, setQuerySubmitted, searchResults, setSearchResults } = props.bundle;
+    // Get state and setStates from context
+    const { query, setQuery, querySubmitted, setQuerySubmitted, searchResults, setSearchResults } = useContext(StateContext) as StateContextType;
 
     // Set up controlled input
     function handleInputChange(event: any) {
@@ -25,7 +23,7 @@ export default function SearchBar(props: ISearchBarProps) {
 
     function handleSubmit(event: any) {
         event.preventDefault();
-        // set query submitted state to true to change home page to header
+        // set query submitted state to query(truthy) to change home page to header
         setQuerySubmitted(query);
         // navigate to search results page with query
         navigate(`/search?q=${query}`);
@@ -39,7 +37,8 @@ export default function SearchBar(props: ISearchBarProps) {
                         placeholder="Find the package you need"
                         inputProps={{ 'aria-label': 'search' }}
                         sx={{ padding: '5px' }}
-                        defaultValue={props.defaultValue}
+                        defaultValue={query}
+                        key={querySubmitted}
                         onChange={handleInputChange}
                     />
 

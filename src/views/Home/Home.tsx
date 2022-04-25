@@ -1,22 +1,24 @@
-import styled from 'styled-components'
-import SearchBar from '../../components/Search/SearchBar/SearchBar'
+import { useContext } from 'react';
+import { StateContextType, StateContext } from '../../context/stateContext';
+import styled from 'styled-components';
+import SearchBar from '../../components/Search/SearchBar/SearchBar';
 import { Link } from "react-router-dom";
 
 export interface IHomeProps {
-    bundle: any;
 }
 
 export default function Home(props: IHomeProps) {
-    // Get query and setQuery from props
-    const { query, setQuery, querySubmitted, setQuerySubmitted } = props.bundle;
+    // Get state and setStates from context
+    const { query, setQuery, querySubmitted, setQuerySubmitted } = useContext(StateContext) as StateContextType;
 
     // Resets header to homepage if someone clicks on the logo to return to homepage
     function resetHomepage() {
-        setQuerySubmitted(false);
+        setQuerySubmitted(null);
+        setQuery(null);
     }
 
     const logo = (
-        <Link to="/"><Logo onClick={resetHomepage}>npf</Logo></Link>
+        <Link to="/" onClick={resetHomepage}><Logo >npf</Logo></Link>
     );
 
     return (
@@ -24,7 +26,7 @@ export default function Home(props: IHomeProps) {
             <Title querySubmitted={querySubmitted}>Build amazing things</Title>
             <HeaderWrap>
                 {querySubmitted ? logo : null}
-                <SearchBar defaultValue={query || undefined} bundle={props.bundle} />
+                <SearchBar />
             </HeaderWrap>
         </Container>
     );

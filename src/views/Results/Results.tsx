@@ -1,22 +1,25 @@
-import * as React from 'react';
+import React, { useContext, useEffect } from 'react';
+import { StateContextType, StateContext } from '../../context/stateContext';
 import styled from 'styled-components';
 import ResultCard from '../../components/Search/ResultCard/ResultCard'
 import Pages from '../../components/Search/Pagination/Pages'
 import { useSearchParams } from 'react-router-dom';
-import useFetchTextSearch from '../../utils/useFetchTextSearch';
+import useFetchTextSearch from '../../utils/FetchHooks/useFetchTextSearch';
 
 export interface IResultsProps {
-    bundle: any;
+
 }
 
 export default function Results(props: IResultsProps) {
-    const { query, setQuery, querySubmitted, setQuerySubmitted, searchResults, setSearchResults } = props.bundle;
+    // Get state and setStates from context
+    const { query, setQuery, querySubmitted, setQuerySubmitted, searchResults, setSearchResults } = useContext(StateContext) as StateContextType;
+
 
     //Hooks & States
     const [searchParams] = useSearchParams();
 
     //If someone lands with a direct query url, make homepage a header, and set query with search params
-    React.useEffect(() => {
+    useEffect(() => {
         if (!query) {
             let searchedQuery = searchParams.get('q')
             setQuerySubmitted(searchedQuery);
@@ -26,7 +29,6 @@ export default function Results(props: IResultsProps) {
 
     //fetch data
     const { data, loading, error } = useFetchTextSearch(querySubmitted)
-    console.log(data)
 
     //Render Cards
     let renderResultCards;
@@ -46,28 +48,20 @@ export default function Results(props: IResultsProps) {
         })
     }
 
-
-    // if (data) {
-    //     renderResultCards = data.objects.map((item: any) => {
-    //         return (
-    //             <h1>{item.package.name}</h1>
-    //         )
-    //     })
-    // }
-
-
-    // const renderResultCards = (
-    //     <>
-    //         <ResultCard data={'1'} />
-    //         <ResultCard data={'2'} />
-    //     </>
-    // )
-
     //RENDER COMPONENT
+    //Loading view: To add loader
     if (loading) {
         return (
             <Container>
                 Loading...
+            </Container>
+        )
+    }
+
+    if (error) {
+        return (
+            <Container>
+                We can't find what you're looking for.
             </Container>
         )
     }
@@ -107,5 +101,8 @@ const ResultsDeck = styled.div`
 `
 
 const TotalResults = styled.div`
+    font-family: var(--main-font);
+    font-weight: bold;
+    font-size: 1.2rem;
     
 `

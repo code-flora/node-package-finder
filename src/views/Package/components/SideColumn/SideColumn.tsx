@@ -2,17 +2,25 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 export interface ISideColumnProps {
+    info: any;
 }
 
 export default function SideColumn(props: ISideColumnProps) {
+    const { name, repository, homepage, version, license } = props.info;
+
     return (
         <Container>
-            <Install><h3>Install</h3><div className="install-code">npm i react-router-dom</div></Install>
-            <Link><h3>Repository</h3><div>github.com/styled-components/styled-components</div> </Link>
-            <Link><h3>Homepage</h3><div>styled-components.com/</div></Link>
+            <Install><h3>Install</h3>
+                <div className="install-code">npm i {name}</div></Install>
+            <Link><h3>Repository</h3>
+                <div>{repository.url}</div>
+            </Link>
+            <Link><h3>Homepage</h3>
+                <div>{homepage}</div>
+            </Link>
             <OtherInfo>
-                <Info><h3>Version</h3><div>5.35</div></Info>
-                <Info><h3>License</h3><div>MIT</div></Info>
+                <Info><h3>Version</h3><div>{version}</div></Info>
+                <Info><h3>License</h3><div>{license}</div></Info>
             </OtherInfo>
         </Container >
     );

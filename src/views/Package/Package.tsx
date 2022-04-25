@@ -1,35 +1,76 @@
-import * as React from 'react';
+import { useEffect, useContext } from 'react';
+import { StateContextType, StateContext } from '../../context/stateContext';
 import styled from 'styled-components';
+import { useParams } from "react-router-dom";
 import TabsBar from './components/TabsBar/TabsBar';
 import MainColumn from './components/MainColumn/MainColumn';
 import SideColumn from './components/SideColumn/SideColumn';
+import useFetchMeta from '../../utils/FetchHooks/useFetchMeta';
+import useFetchSpecificPackage from '../../utils/FetchHooks/useFetchSpecificPackage';
+import convertDateToString from '../../utils/Conversion/convertDateToString';
+import Loading from '../../components/StatePages/Loading/Loading';
+import Error from '../../components/StatePages/Error/Error';
 
 export interface IPackageProps {
-    bundle: any;
+
 }
 
 export default function Package(props: IPackageProps) {
-    const { setQuerySubmitted } = props.bundle;
+    //Hooks
+    let params = useParams();
 
-    //ensure homepage is header sized if getting here via direct url
-    React.useEffect(() => {
-        setQuerySubmitted(true);
+    //If getting here via direct URL, get name and version from url
+    useEffect(() => {
+        if (!querySubmitted) {
+            let { packageName, version } = params;
+            setQuery(packageName);
+            setQuerySubmitted(packageName);
+            setPackageInfo({ name: packageName, version })
+        }
     }, [])
+
+    // Get state and setStates from context
+    const { packageInfo, setPackageInfo, query, setQuery, querySubmitted, setQuerySubmitted } = useContext(StateContext) as StateContextType;
+    let name, version;
+    if (packageInfo) {
+        name = packageInfo.name;
+        version = packageInfo.version;
+    }
+
+    // FETCH DATA
+    const { data, loading, error } = useFetchSpecificPackage(name, version);
+    const { metaData, metaLoading, metaError } = useFetchMeta(name);
+
+    // Getting content to be rendered/passed
+    const { readme, uploadDate, versionsCount } = metaData;
+    let date = convertDateToString(uploadDate);
+
+    // RENDER VIEWS
+    if (loading || metaLoading) {
+        return (
+            <Loading />
+        )
+    }
+
+    if (error || metaError) {
+        return (
+            <Error />
+        )
+    }
 
     return (
         <Container>
             <TitleBar>
-                <PackageName>react-router-dom</PackageName>
+                <PackageName>{data.name}</PackageName>
                 <PackageDetails>
-                    v6.0.2, Published 22th June 2022
+                    v{data.version}{packageInfo.date ? (`, Published ${date}`) : null}
                 </PackageDetails>
             </TitleBar>
-            <TabsBar />
+            <TabsBar info={data} versionsCount={versionsCount} />
             <ContentWrap>
-                <MainColumn />
-                <SideColumn />
+                <MainColumn info={data} readmeData={readme} />
+                <SideColumn info={data} />
             </ContentWrap>
-
         </Container>
     );
 }
@@ -47,16 +88,6 @@ const Container = styled.div`
     @media (min-width: 1200px) {
         width: 1200px;
     }
-`
-
-const SearchBarWrap = styled.header`
-width: 100%;
-
-@media (min-width: 1200px){
-    width: 100%;
-    padding-left: 15%;
-    padding-right: 15%;
-}
 `
 
 const TitleBar = styled.div`

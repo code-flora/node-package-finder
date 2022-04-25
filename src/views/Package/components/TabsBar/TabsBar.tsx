@@ -7,9 +7,23 @@ import styled from 'styled-components';
 
 
 export interface ITabsBarProps {
+    info: any;
+    versionsCount: number;
 }
 
 export default function TabsBar(props: ITabsBarProps) {
+    const { info, versionsCount } = props;
+    // counts for dependencies and versions
+    let depCount, devDepCount;
+    if (info.dependencies) {
+        depCount = Object.keys(info.dependencies).length;
+    } else { depCount = 0 }
+    if (info.devDependencies) {
+        devDepCount = Object.keys(info.devDependencies).length;
+    } else { devDepCount = 0 }
+
+
+
     // Set media query to change tabs bar display
     const smallScreen = useMediaQuery('(max-width: 600px)');
 
@@ -27,9 +41,8 @@ export default function TabsBar(props: ITabsBarProps) {
             orientation={smallScreen ? "vertical" : undefined}
         >
             <Tab value="read-me" label="Readme" className="tab-style" />
-            <Tab value="dependencies" label="10 Dependencies" />
-            <Tab value="dependents" label="14,583 Dependents" />
-            <Tab value="versions" label="291 Versions" />
+            <Tab value="dependencies" label={`${depCount + devDepCount} Dependencies`} />
+            <Tab value="versions" label={`${versionsCount} Versions`} />
         </StyledTabs>
     );
 }
