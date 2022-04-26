@@ -24,13 +24,21 @@ const useFetchMeta = (name: string) => {
                     }
                     throw response;
                 }).then(data => {
-                    let versionsArray = Object.keys(data.versions)
+                    let readMe: string | null = null, publishDate: string = "", versionsArray: string[];
+
+                    //Get all the versions from metadata, and the latest version (for date and readme, if default readme isn't available)
+                    versionsArray = Object.keys(data.versions);
                     let latestVersion = versionsArray.pop()
-                    let readMe, publishDate;
-                    if (latestVersion) {
+
+                    // if there is default readme, use it, else, go into the versions to extract that readme
+                    if (data.readme && latestVersion) {
+                        readMe = data.readme;
+                        publishDate = data.time[latestVersion]
+                    } else if (latestVersion) {
                         readMe = data.versions[latestVersion].readme
                         publishDate = data.time[latestVersion]
                     }
+
                     setReadme(readMe);
                     setUploadDate(publishDate);
                     setVersionsCount(versionsArray.length);
@@ -43,12 +51,8 @@ const useFetchMeta = (name: string) => {
                 })
         }
     }, [name])
-    type TData = {
-        readme: string | null,
-        uploadDate: string,
-        versionsCount: number
-    }
-    let metaData: TData = { readme, uploadDate, versionsCount }
+
+    let metaData = { readme, uploadDate, versionsCount }
     return { metaData, metaLoading, metaError };
 }
 

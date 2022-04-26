@@ -29,6 +29,7 @@ function App() {
             <Route path="/" element={null} />
             <Route path="search" element={<Results />} />
             <Route path="package/:packageName/:version" element={<Package />} />
+            <Route path="package/:packageParent/:packageName/:version" element={<Package />} />
           </Routes>
         </BrowserRouter>
       </StateContext.Provider>

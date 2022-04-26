@@ -10,7 +10,6 @@ import useFetchSpecificPackage from '../../utils/FetchHooks/useFetchSpecificPack
 import convertDateToString from '../../utils/Conversion/convertDateToString';
 import Loading from '../../components/StatePages/Loading/Loading';
 import Error from '../../components/StatePages/Error/Error';
-import { TSpecificPackage } from '../../utils/APITypesDeclaration'
 
 export interface IPackageProps {
 
@@ -19,27 +18,36 @@ export interface IPackageProps {
 export default function Package(props: IPackageProps) {
     // Set states for tab and panels
     const [value, setValue] = useState<number>(0);
-
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     }
 
-
-    //Hooks
+    // Hooks
     let params = useParams();
 
-    //If getting here via direct URL, get name and version from url
+    // If getting here via direct URL, get name and version from url
     useEffect(() => {
         if (!querySubmitted) {
-            let { packageName, version } = params;
-            setQuery(packageName);
-            setQuerySubmitted(packageName);
-            setPackageInfo({ name: packageName, version })
+            // For normal routes /packageName/:id
+            if (Object.keys(params).length == 2) {
+                let { packageName, version } = params;
+                setQuery(packageName);
+                setQuerySubmitted(packageName);
+                setPackageInfo({ name: packageName, version })
+            }
+            // For other routes like /packageParent/packageName/:id
+            else if (Object.keys(params).length == 3) {
+                let { packageParent, packageName, version } = params;
+                let actualPackageName: string = `${packageParent}/${packageName}`;
+                setQuery(actualPackageName);
+                setQuerySubmitted(actualPackageName);
+                setPackageInfo({ name: actualPackageName, version })
+            }
         }
     }, [])
 
     // Get state and setStates from context
-    const { packageInfo, setPackageInfo, query, setQuery, querySubmitted, setQuerySubmitted } = useContext(StateContext) as StateContextType;
+    const { packageInfo, setPackageInfo, setQuery, querySubmitted, setQuerySubmitted } = useContext(StateContext) as StateContextType;
     let name, version;
     if (packageInfo) {
         name = packageInfo.name;
@@ -47,7 +55,7 @@ export default function Package(props: IPackageProps) {
     }
 
     // FETCH DATA
-    const { data, loading, error }: { data: TSpecificPackage, loading: boolean, error: [] | null } = useFetchSpecificPackage(name, version);
+    const { data, loading, error } = useFetchSpecificPackage(name, version);
     const { metaData, metaLoading, metaError } = useFetchMeta(name);
 
     // Getting content to be rendered/passed
@@ -72,7 +80,7 @@ export default function Package(props: IPackageProps) {
             <TitleBar>
                 <PackageName>{data.name}</PackageName>
                 <PackageDetails>
-                    v{data.version}{packageInfo.date ? (`, Published ${date}`) : null}
+                    v{data.version}, Published {date}
                 </PackageDetails>
             </TitleBar>
             <TabsBar info={data} versionsCount={versionsCount} handleChange={handleChange} value={value} setValue={setValue} />
