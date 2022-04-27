@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { StateContextType, StateContext } from '../../../../context/stateContext';
-import styled from 'styled-components';
-import Paper from '@mui/material/Paper';
+import * as S from './ResultCard.styles';
 import KeywordButton from '../KeywordButton/KeywordButton'
 import { Link } from "react-router-dom";
 import convertDateToString from '../../../../utils/Conversion/convertDateToString';
@@ -44,92 +43,26 @@ export default function ResultCard(props: IResultCardProps) {
     }
 
     return (
-        <Container>
-            <StyledPaper elevation={2}>
+        <S.Container>
+            <S.StyledPaper elevation={2}>
                 <Link to={`/package/${name}/${version}`} onClick={captureParams}>
-                    <PackageName>{name}</PackageName>
+                    <S.PackageName>{name}</S.PackageName>
                 </Link>
-                {description ? (<PackageDesc>{description}</PackageDesc>) : null}
-                <UploadInfoBar>
-                    <UserName>{publisher}</UserName>&nbsp;
-                    <UploadVersion>published v{version}</UploadVersion>&nbsp;•&nbsp;
-                    <UploadDate>on {publishDate}</UploadDate>
-                </UploadInfoBar>
+                {description ? (<S.PackageDesc>{description}</S.PackageDesc>) : null}
+                <S.UploadInfoBar>
+                    <S.UserName>{publisher}</S.UserName>&nbsp;
+                    <S.UploadVersion>published v{version}</S.UploadVersion>&nbsp;•&nbsp;
+                    <S.UploadDate>on {publishDate}</S.UploadDate>
+                </S.UploadInfoBar>
                 {keywords ? (
-                    <KeywordsBar>
+                    <S.KeywordsBar>
                         {keywordButtons}
-                    </KeywordsBar>
+                    </S.KeywordsBar>
                 ) : null}
 
-            </StyledPaper>
-        </Container>
+            </S.StyledPaper>
+        </S.Container>
     );
 }
 
-const Container = styled.section`
-    margin-top: 15px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-`
 
-const StyledPaper = styled(Paper)`
-    width: 100%;
-    padding: 20px 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-family: var(--main-font);
-    color: var(--main-color);
-
-    a {
-        text-decoration: none;
-    }
-`
-const PackageName = styled.h1`
-    font-size: 1.5rem;
-    font-family: var(--code-font);
-    color: var(--sub-color);
-
-    @media (min-width: 768px) {
-        font-size: 1.8rem;
-    }
-`
-const PackageDesc = styled.div`
-    margin-top: 10px;
-    font-size: 0.95rem;
-
-    @media (min-width: 768px) {
-        font-size: 1rem;
-    }
-`
-
-const UploadInfoBar = styled.div`
-    margin-top: 10px;
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    font-size: 0.75rem;
-    letter-spacing: 0.5px;
-
-    @media (min-width: 768px) {
-        font-size: 0.8rem;
-    }
-`
-
-const UserName = styled.span`
-
-`
-const UploadDate = styled.span`
-
-`
-
-const UploadVersion = styled.span`
-
-`
-
-const KeywordsBar = styled(PackageDesc)`
-    width: 100%;
-    border-top: 2px solid var(--sub-alt-color);
-`

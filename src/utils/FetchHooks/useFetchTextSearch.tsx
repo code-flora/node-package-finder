@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
-const useFetchTextSearch = (querySubmitted: string) => {
+const useFetchTextSearch = (querySubmitted: string, query: string) => {
     const [data, setData] = useState<any | null>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<[] | null>(null);
 
     useEffect(() => {
-        if (querySubmitted) {
+        if (querySubmitted == query) {
             let endpoint = `https://registry.npmjs.cf/-/v1/search?text=${querySubmitted}`;
 
             let header = {
@@ -32,7 +32,6 @@ const useFetchTextSearch = (querySubmitted: string) => {
                 })
         }
     }, [querySubmitted])
-    console.log(querySubmitted)
 
     return { data, loading, error };
 }

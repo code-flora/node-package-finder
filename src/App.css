@@ -79,3 +79,19 @@ ol[class] {
   text-align: center;
   width: 100%;
 }
+
+/*Lifted classes*/
+.main-container {
+  padding: 20px;
+  width: calc(100vw - 20px);
+  min-height: calc(100vh-70px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (min-width: 1200px) {
+  .main-container {
+    width: 1200px;
+  }
+}

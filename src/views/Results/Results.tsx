@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { StateContextType, StateContext } from '../../context/stateContext';
-import styled from 'styled-components';
+import * as S from "./Results.styles"
 import ResultCard from './components/ResultCard/ResultCard'
 import Pages from '../../components/Search/Pagination/Pages'
 import { useSearchParams } from 'react-router-dom';
@@ -8,11 +8,7 @@ import useFetchTextSearch from '../../utils/FetchHooks/useFetchTextSearch';
 import Loading from '../../components/StatePages/Loading/Loading';
 import Error from '../../components/StatePages/Error/Error';
 
-export interface IResultsProps {
-
-}
-
-export default function Results(props: IResultsProps) {
+export default function Results() {
     // Get state and setStates from context
     const { query, setQuery, querySubmitted, setQuerySubmitted } = useContext(StateContext) as StateContextType;
 
@@ -29,8 +25,7 @@ export default function Results(props: IResultsProps) {
     }, [query])
 
     // FETCH DATA
-    const { data, loading, error } = useFetchTextSearch(querySubmitted)
-
+    const { data, loading, error } = useFetchTextSearch(querySubmitted, query)
 
     // Render Cards
     let renderResultCards;
@@ -54,53 +49,29 @@ export default function Results(props: IResultsProps) {
     // Loading view
     if (loading) {
         return (
-            <Loading />
+            <S.Container>
+                <Loading />
+            </S.Container>
         )
     }
 
     if (error) {
         return (
-            <Error />
+            <S.Container>
+                <Error />
+            </S.Container>
         )
     }
 
     return (
-        <Container>
-            <ResultsDeck>
-                <TotalResults>{data.total} packages found</TotalResults>
+        <S.Container className="main-container">
+            <S.ResultsDeck>
+                <S.TotalResults>{data.total} packages found</S.TotalResults>
                 <>
                     {!loading ? renderResultCards : null}
                 </>
-            </ResultsDeck>
+            </S.ResultsDeck>
             <Pages />
-        </Container>
+        </S.Container>
     );
 }
-
-const Container = styled.section`
-    padding: 20px;
-    width: calc(100vw - 20px);
-    min-height: calc(100vh-70px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    @media (min-width: 1200px) {
-        width: 1000px;
-        padding-left: 15%;
-        padding-right: 15%;
-    }
-`
-
-const ResultsDeck = styled.div`
-    margin-top: 15px;
-    width: 100%;
-    text-align: left;
-`
-
-const TotalResults = styled.div`
-    font-family: var(--main-font);
-    font-weight: bold;
-    font-size: 1.2rem;
-    
-`

@@ -32,7 +32,6 @@ const useFetchSpecificPackage = (name: string, version: string) => {
                 })
         }
     }, [name, version])
-
     return { data, loading, error };
 }
 

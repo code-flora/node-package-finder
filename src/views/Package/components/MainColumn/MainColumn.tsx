@@ -1,5 +1,5 @@
 import TabPanel from '../TabPanel/TabPanel';
-import styled from 'styled-components';
+import * as S from './MainColumn.styles';
 import parse from 'html-react-parser';
 import { marked } from 'marked';
 
@@ -57,18 +57,18 @@ export default function MainColumn(props: IMainColumnProps) {
     }
 
     return (
-        <Container>
+        <S.Container>
             <TabPanel value={value} index={0}>
-                <ReadMe>
+                <S.ReadMe>
                     {readmeData ? renderReadme : noReadmeData}
-                </ReadMe>
-                <Keywords>
+                </S.ReadMe>
+                <S.Keywords>
                     <h2>Keywords</h2>
                     <ul className="ul-style" >{renderKeywords}</ul>
-                </ Keywords>
+                </S.Keywords>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <Dependencies>
+                <S.Dependencies>
                     {info.dependencies ? (
                         <>
                             <h2>Dependencies</h2>
@@ -83,102 +83,15 @@ export default function MainColumn(props: IMainColumnProps) {
                             <ul className="ul-style">{renderDevDependencies}</ul>
                         </>
                     ) : null}
-                </Dependencies>
+                </S.Dependencies>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                <Versions>
+                <S.Versions>
                     Under Construction
-                </Versions>
+                </S.Versions>
             </TabPanel>
-        </Container >
+        </S.Container >
     );
 }
 
-const Container = styled.section`
-    padding-right: 20px;
-    width: 70%;
-    font-family: var(--main-font);
 
-    @media (max-width: 1000px) {
-        padding: 20px 0px;
-        width: 100%;
-    }
-
-    h2{
-        color: var(--sub-color);
-    }
-
-    .link-style{
-        margin-right: 12px;
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: var(--error-extra-color);
-        text-decoration: none;
-        overflow-wrap: normal;
-        transition: color 0.2s ease-in-out;
-    }
-
-    .link-style:hover{
-        color: var(--main-color);
-    }
-
-    .ul-style {
-        list-style-type: none;
-        padding-inline-start: 0;
-        margin-block-start: 0;
-    }
-
-    .li-style {
-        display: inline;
-        line-height: 2rem;
-    }
-`
-const ReadMe = styled.div`
-    h2 {
-        margin-bottom: 10px;
-    }
-
-    h2:not(:first-of-type) {
-        margin-top: 30px;
-    }
-
-    code {
-        padding: 3px 5px;
-        background-color: #ddeff355;
-        color: var(--main-color);
-    }
-
-    pre {
-        padding: 10px 20px;
-        width: 100%;
-        background-color: #ddeff355;
-        overflow-x: auto;
-    }
-
-    pre code {
-        background-color: transparent;
-        padding: 0;
-    }
-
-    a {
-        text-decoration: none;
-        color: var(--error-extra-color);
-        font-weight: bold;
-    }
-
-    img {
-        max-width: 100%;
-    }
-`
-
-const Keywords = styled.div`
-margin-top: 20px;
-
-`
-
-const Dependencies = styled.div`
-
-`
-const Versions = styled.div`
-
-`

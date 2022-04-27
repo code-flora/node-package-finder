@@ -2,10 +2,7 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { TSpecificPackage } from '../../../../utils/APITypesDeclaration';
-
 import styled from 'styled-components';
-
 
 export interface ITabsBarProps {
     info: any;

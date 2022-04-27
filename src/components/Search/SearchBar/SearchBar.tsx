@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { StateContextType, StateContext } from '../../../context/stateContext';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
@@ -10,22 +10,26 @@ export interface ISearchBarProps {
 }
 
 export default function SearchBar(props: ISearchBarProps) {
-    //hooks
+    // Hooks
     let navigate = useNavigate();
 
     // Get state and setStates from context
     const { query, setQuery, querySubmitted, setQuerySubmitted, searchResults, setSearchResults } = useContext(StateContext) as StateContextType;
 
+
     // Set up controlled input
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+        // Slow down the update of query to prevent constant re-rendering of results page, i.e. constant fetching
+        //setTimeout(() => setQuery(event.target.value), 1000);
         setQuery(event.target.value)
+
     }
 
     function handleSubmit(event: any) {
         event.preventDefault();
-        // set query submitted state to query(truthy) to change home page to header
+        // Set query submitted state to query(truthy) to change home page to header
         setQuerySubmitted(query);
-        // navigate to search results page with query
+        // Navigate to search results page with query
         navigate(`/search?q=${query}`);
     }
 
