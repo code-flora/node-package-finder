@@ -11,13 +11,12 @@ export interface ITabsBarProps {
     info: any;
     versionsCount: number;
     value: number;
-    setValue: React.Dispatch<React.SetStateAction<number>>;
     handleChange: (event: React.SyntheticEvent, newValue: number) => void;
 }
 
 export default function TabsBar(props: ITabsBarProps) {
     // Get props
-    const { info, versionsCount, value, setValue, handleChange } = props;
+    const { info, versionsCount, value, handleChange } = props;
 
     // aria stuff
     function a11yProps(index: number) {
@@ -27,7 +26,7 @@ export default function TabsBar(props: ITabsBarProps) {
         };
     }
 
-    // counts for dependencies and versions
+    // Counts for dependencies and versions
     let depCount, devDepCount;
     if (info.dependencies) {
         depCount = Object.keys(info.dependencies).length;
@@ -35,8 +34,6 @@ export default function TabsBar(props: ITabsBarProps) {
     if (info.devDependencies) {
         devDepCount = Object.keys(info.devDependencies).length;
     } else { devDepCount = 0 }
-
-
 
     // Set media query to change tabs bar display
     const smallScreen = useMediaQuery('(max-width: 600px)');

@@ -9,7 +9,7 @@ export interface IHomeProps {
 
 export default function Home(props: IHomeProps) {
     // Get state and setStates from context
-    const { query, setQuery, querySubmitted, setQuerySubmitted } = useContext(StateContext) as StateContextType;
+    const { setQuery, querySubmitted, setQuerySubmitted } = useContext(StateContext) as StateContextType;
 
     // Resets header to homepage if someone clicks on the logo to return to homepage
     function resetHomepage() {
@@ -38,7 +38,7 @@ interface querySubmittedProps {
 
 const Container = styled.div<querySubmittedProps>`
 height: ${props => props.querySubmitted ? `70px;` : `100vh;`}
-width: 100vw;
+width: calc(100vw - 20px);
 padding: 10px 20px;
 display: flex;
 flex-direction: column;

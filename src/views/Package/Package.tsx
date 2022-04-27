@@ -83,7 +83,7 @@ export default function Package(props: IPackageProps) {
                     v{data.version}, Published {date}
                 </PackageDetails>
             </TitleBar>
-            <TabsBar info={data} versionsCount={versionsCount} handleChange={handleChange} value={value} setValue={setValue} />
+            <TabsBar info={data} versionsCount={versionsCount} handleChange={handleChange} value={value} />
             <ContentWrap>
                 <MainColumn info={data} readmeData={readme} value={value} />
                 <SideColumn info={data} />
@@ -94,7 +94,7 @@ export default function Package(props: IPackageProps) {
 
 const Container = styled.div`
     padding: 10px 20px;
-    width: 100vw;
+    width: calc(100vw - 20px);
     min-height: calc(100vh-70px);
     display: flex;
     flex-direction: column;

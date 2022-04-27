@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export interface ILoadingProps {
 }
@@ -6,7 +7,7 @@ export interface ILoadingProps {
 export default function Loading(props: ILoadingProps): JSX.Element {
     return (
         <Container>
-            Loading...
+            <CircularProgress />
         </Container>
     );
 }

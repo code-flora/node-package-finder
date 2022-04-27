@@ -1,10 +1,12 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { StateContextType, StateContext } from '../../context/stateContext';
 import styled from 'styled-components';
-import ResultCard from '../../components/Search/ResultCard/ResultCard'
+import ResultCard from './components/ResultCard/ResultCard'
 import Pages from '../../components/Search/Pagination/Pages'
 import { useSearchParams } from 'react-router-dom';
 import useFetchTextSearch from '../../utils/FetchHooks/useFetchTextSearch';
+import Loading from '../../components/StatePages/Loading/Loading';
+import Error from '../../components/StatePages/Error/Error';
 
 export interface IResultsProps {
 
@@ -12,13 +14,12 @@ export interface IResultsProps {
 
 export default function Results(props: IResultsProps) {
     // Get state and setStates from context
-    const { query, setQuery, querySubmitted, setQuerySubmitted, searchResults, setSearchResults } = useContext(StateContext) as StateContextType;
+    const { query, setQuery, querySubmitted, setQuerySubmitted } = useContext(StateContext) as StateContextType;
 
-
-    //Hooks & States
+    // Hooks & States
     const [searchParams] = useSearchParams();
 
-    //If someone lands with a direct query url, make homepage a header, and set query with search params
+    // If someone lands with a direct query url, make homepage a header, and set query with search params
     useEffect(() => {
         if (!query) {
             let searchedQuery = searchParams.get('q')
@@ -27,10 +28,11 @@ export default function Results(props: IResultsProps) {
         }
     }, [query])
 
-    //fetch data
+    // FETCH DATA
     const { data, loading, error } = useFetchTextSearch(querySubmitted)
 
-    //Render Cards
+
+    // Render Cards
     let renderResultCards;
     if (data) {
         renderResultCards = data.objects.map((item: any) => {
@@ -48,21 +50,17 @@ export default function Results(props: IResultsProps) {
         })
     }
 
-    //RENDER COMPONENT
-    //Loading view: To add loader
+    // RENDER COMPONENT
+    // Loading view
     if (loading) {
         return (
-            <Container>
-                Loading...
-            </Container>
+            <Loading />
         )
     }
 
     if (error) {
         return (
-            <Container>
-                We can't find what you're looking for.
-            </Container>
+            <Error />
         )
     }
 
@@ -81,7 +79,7 @@ export default function Results(props: IResultsProps) {
 
 const Container = styled.section`
     padding: 20px;
-    width: 100vw;
+    width: calc(100vw - 20px);
     min-height: calc(100vh-70px);
     display: flex;
     flex-direction: column;

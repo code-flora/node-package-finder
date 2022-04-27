@@ -12,29 +12,9 @@ export interface IMainColumnProps {
 export default function MainColumn(props: IMainColumnProps) {
     // Get props and declare variables for future rendering
     const { info, readmeData, value } = props;
+    let renderReadme, renderKeywords, renderDependencies, renderDevDependencies;
 
-    let renderDependencies, renderDevDependencies, renderReadme;
-
-    //render dependencies
-    if (info.dependencies) {
-        let depArray = Object.keys(info.dependencies);
-        renderDependencies = depArray.map((dep) => {
-            return (
-                <li key={dep}><a href="" className="dep-links" >{dep}</a></li>
-            )
-        })
-    }
-
-    if (info.devDependencies) {
-        let devDepArray = Object.keys(info.devDependencies);
-        renderDevDependencies = devDepArray.map((dep) => {
-            return (
-                <li key={dep}><a href="" className="dep-links" >{dep}</a></li>
-            )
-        })
-    }
-
-    // render Readme data
+    // Render Readme data
     if (readmeData) {
         //parse markdown to html
         let markdownToHtml = marked.parse(readmeData)
@@ -46,22 +26,61 @@ export default function MainColumn(props: IMainColumnProps) {
         <h2>No Readme.md found</h2>
     )
 
+    // Render keywords
+    if (info.keywords) {
+        renderKeywords = info.keywords.map((keyword: string, index: number) => {
+            return (
+                <li key={`${keyword}-${index}`} className="li-style">
+                    <a href={`/search?q=keywords:${keyword}`} className="link-style">{keyword}</a>
+                </li>
+            )
+        })
+    }
+
+    // Render dependencies
+    if (info.dependencies) {
+        let depArray = Object.keys(info.dependencies);
+        renderDependencies = depArray.map((dep) => {
+            return (
+                <li key={dep} className="li-style"><a href="#" className="link-style" >{dep}</a></li>
+            )
+        })
+    }
+
+    if (info.devDependencies) {
+        let devDepArray = Object.keys(info.devDependencies);
+        renderDevDependencies = devDepArray.map((dep) => {
+            return (
+                <li key={dep} className="li-style"><a href="#" className="link-style" >{dep}</a></li>
+            )
+        })
+    }
+
     return (
         <Container>
             <TabPanel value={value} index={0}>
                 <ReadMe>
                     {readmeData ? renderReadme : noReadmeData}
                 </ReadMe>
+                <Keywords>
+                    <h2>Keywords</h2>
+                    <ul className="ul-style" >{renderKeywords}</ul>
+                </ Keywords>
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <Dependencies>
-                    <h2>Dependencies</h2>
-                    <ul>{renderDependencies}</ul>
+                    {info.dependencies ? (
+                        <>
+                            <h2>Dependencies</h2>
+                            <ul className="ul-style">{renderDependencies}</ul>
+                        </>
+                    ) : null}
+
 
                     {info.devDependencies ? (
                         <>
                             <h2>Dev Dependencies</h2>
-                            <ul>{renderDevDependencies}</ul>
+                            <ul className="ul-style">{renderDevDependencies}</ul>
                         </>
                     ) : null}
                 </Dependencies>
@@ -89,7 +108,7 @@ const Container = styled.section`
         color: var(--sub-color);
     }
 
-    .dep-links{
+    .link-style{
         margin-right: 12px;
         font-size: 1.2rem;
         font-weight: bold;
@@ -99,8 +118,19 @@ const Container = styled.section`
         transition: color 0.2s ease-in-out;
     }
 
-    .dep-links:hover{
+    .link-style:hover{
         color: var(--main-color);
+    }
+
+    .ul-style {
+        list-style-type: none;
+        padding-inline-start: 0;
+        margin-block-start: 0;
+    }
+
+    .li-style {
+        display: inline;
+        line-height: 2rem;
     }
 `
 const ReadMe = styled.div`
@@ -127,6 +157,7 @@ const ReadMe = styled.div`
 
     pre code {
         background-color: transparent;
+        padding: 0;
     }
 
     a {
@@ -140,16 +171,13 @@ const ReadMe = styled.div`
     }
 `
 
-const Dependencies = styled.div`
-    ul {
-        list-style-type: none;
-        padding-inline-start: 0;
-        margin-block-start: 0;
-    }
+const Keywords = styled.div`
+margin-top: 20px;
 
-    li {
-        display: inline;
-    }
+`
+
+const Dependencies = styled.div`
+
 `
 const Versions = styled.div`
 

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 const useFetchMeta = (name: string) => {
     const [readme, setReadme] = useState<string | null>(null);
     const [versionsCount, setVersionsCount] = useState<number>(0);
+    const [AversionsArray, setVersionsArray] = useState<[string]>([""]);
     const [uploadDate, setUploadDate] = useState<string>("");
     const [metaLoading, setLoading] = useState<boolean>(true);
     const [metaError, setError] = useState<[] | null>(null);

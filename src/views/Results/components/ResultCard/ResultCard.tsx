@@ -1,10 +1,10 @@
 import { useContext } from 'react';
-import { StateContextType, StateContext } from '../../../context/stateContext';
+import { StateContextType, StateContext } from '../../../../context/stateContext';
 import styled from 'styled-components';
 import Paper from '@mui/material/Paper';
-import KeywordButton from './KeywordButton'
+import KeywordButton from '../KeywordButton/KeywordButton'
 import { Link } from "react-router-dom";
-import convertDateToString from '../../../utils/Conversion/convertDateToString';
+import convertDateToString from '../../../../utils/Conversion/convertDateToString';
 
 export interface IResultCardProps {
     name: string;
@@ -19,25 +19,25 @@ export default function ResultCard(props: IResultCardProps) {
     const { name, version, description, date, publisher, keywords } = props;
 
     // Get state and setStates from context
-    const { packageInfo, setPackageInfo } = useContext(StateContext) as StateContextType;
+    const { setPackageInfo } = useContext(StateContext) as StateContextType;
 
-    //capture name and version on click, for specific package API
+    // Capture name and version on click, for specific package API
     const captureParams = () => {
         let params = { name, version, date }
         setPackageInfo(params)
     }
 
-    //convert date from iso type
+    // Convert date from iso type
     let publishDate = convertDateToString(date);
 
 
-    //render keyword buttons
+    // Render keyword buttons
     let keywordButtons;
     if (keywords) {
         keywordButtons = (
-            keywords.map((keyword: string) => {
+            keywords.map((keyword: string, index: number) => {
                 return (
-                    <KeywordButton keyword={keyword} key={keyword} />
+                    <KeywordButton keyword={keyword} key={`${name}-${keyword}-${index}`} />
                 )
             })
         )

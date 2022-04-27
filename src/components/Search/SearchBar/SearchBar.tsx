@@ -17,7 +17,7 @@ export default function SearchBar(props: ISearchBarProps) {
     const { query, setQuery, querySubmitted, setQuerySubmitted, searchResults, setSearchResults } = useContext(StateContext) as StateContextType;
 
     // Set up controlled input
-    function handleInputChange(event: any) {
+    function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         setQuery(event.target.value)
     }
 
@@ -28,6 +28,10 @@ export default function SearchBar(props: ISearchBarProps) {
         // navigate to search results page with query
         navigate(`/search?q=${query}`);
     }
+
+    // Check if input is null or spaces (a chain of empty spaces), if so, disable submit
+    const spaceRegex = /^\s+$/g;
+    const isValid = Boolean(query && !query.match(spaceRegex));
 
     return (
         <SearchWrap>
@@ -42,10 +46,9 @@ export default function SearchBar(props: ISearchBarProps) {
                         onChange={handleInputChange}
                     />
 
-                    {/* <SearchIconWrapper> */}
-                    <SubmitButton type="submit" ><SearchIcon /></SubmitButton>
-                    {/* </SearchIconWrapper> */}
-                    <input type="submit" hidden />
+                    <SubmitButton type="submit" disabled={!isValid}><SearchIcon /></SubmitButton>
+
+                    <input type="submit" disabled={!isValid} hidden />
                 </Form>
 
             </Search>
@@ -94,17 +97,6 @@ const Search = styled('div')(({ theme }) => ({
         //marginLeft: theme.spacing(3),
         width: 'auto',
     },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    right: '0px',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
