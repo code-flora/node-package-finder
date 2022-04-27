@@ -9,16 +9,13 @@ import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom";
 function App() {
   //Set up states
   // for query, to be shared with Results and Package
-  const [query, setQuery] = useState<null | string>(null);
-  const [querySubmitted, setQuerySubmitted] = useState<string | null>(null);
-
-  // for results after returned from API
-  const [searchResults, setSearchResults] = useState<null | {}>(null);
+  const [query, setQuery] = useState<string>("");
+  const [querySubmitted, setQuerySubmitted] = useState<string>("");
 
   // for specific package after returned from API
-  const [packageInfo, setPackageInfo] = useState<null | {}>(null);
+  const [packageInfo, setPackageInfo] = useState<{}>({});
 
-  const bundle = { query, setQuery, querySubmitted, setQuerySubmitted, searchResults, setSearchResults, packageInfo, setPackageInfo }
+  const bundle = { query, setQuery, querySubmitted, setQuerySubmitted, packageInfo, setPackageInfo }
 
   return (
     <div className="App">

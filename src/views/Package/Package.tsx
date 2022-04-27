@@ -10,6 +10,7 @@ import useFetchSpecificPackage from '../../utils/FetchHooks/useFetchSpecificPack
 import convertDateToString from '../../utils/Conversion/convertDateToString';
 import Loading from '../../components/StatePages/Loading/Loading';
 import Error from '../../components/StatePages/Error/Error';
+import useFetchDownloadCount from '../../utils/FetchHooks/useFetchDownloadCount';
 
 export default function Package() {
     // Set states for tab and panels
@@ -26,14 +27,14 @@ export default function Package() {
         if (!querySubmitted) {
             // For normal routes /packageName/:id
             if (Object.keys(params).length == 2) {
-                let { packageName, version } = params;
+                let { packageName = "", version = "" } = params;
                 setQuery(packageName);
                 setQuerySubmitted(packageName);
                 setPackageInfo({ name: packageName, version })
             }
             // For other routes like /packageParent/packageName/:id
             else if (Object.keys(params).length == 3) {
-                let { packageParent, packageName, version } = params;
+                let { packageParent = "", packageName = "", version = "" } = params;
                 let actualPackageName: string = `${packageParent}/${packageName}`;
                 setQuery(actualPackageName);
                 setQuerySubmitted(actualPackageName);
@@ -44,19 +45,24 @@ export default function Package() {
 
     // Get state and setStates from context
     const { packageInfo, setPackageInfo, setQuery, querySubmitted, setQuerySubmitted } = useContext(StateContext) as StateContextType;
-    let name, version;
-    if (packageInfo) {
-        name = packageInfo.name;
-        version = packageInfo.version;
-    }
+
+    let name: string = packageInfo.name!;
+    let version: string = packageInfo.version!;
+    let date: string | undefined = packageInfo.date;
 
     // FETCH DATA
     const { data, loading, error } = useFetchSpecificPackage(name, version);
     const { metaData, metaLoading, metaError } = useFetchMeta(name);
 
-    // Getting content to be rendered/passed
+    // Getting content to be rendered/passed. Add date to packageInfo in context if landing here via url.
     const { readme, uploadDate, versionsCount } = metaData;
-    let date = convertDateToString(uploadDate);
+    useEffect(() => {
+        if (!date) { setPackageInfo({ date: uploadDate }) }
+    })
+
+
+    // Convert date to string
+    let convertedDate = convertDateToString(date!);
 
     // RENDER VIEWS
     if (loading || metaLoading) {
@@ -76,7 +82,7 @@ export default function Package() {
             <S.TitleBar>
                 <S.PackageName>{data.name}</S.PackageName>
                 <S.PackageDetails>
-                    v{data.version}, Published {date}
+                    v{data.version}, Published {convertedDate}
                 </S.PackageDetails>
             </S.TitleBar>
             <TabsBar info={data} versionsCount={versionsCount} handleChange={handleChange} value={value} />

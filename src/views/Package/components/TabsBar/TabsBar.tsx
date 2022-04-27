@@ -5,7 +5,10 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import styled from 'styled-components';
 
 export interface ITabsBarProps {
-    info: any;
+    info: {
+        dependencies?: {};
+        devDependencies?: {};
+    };
     versionsCount: number;
     value: number;
     handleChange: (event: React.SyntheticEvent, newValue: number) => void;

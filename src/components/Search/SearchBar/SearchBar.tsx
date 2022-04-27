@@ -14,7 +14,7 @@ export default function SearchBar(props: ISearchBarProps) {
     let navigate = useNavigate();
 
     // Get state and setStates from context
-    const { query, setQuery, querySubmitted, setQuerySubmitted, searchResults, setSearchResults } = useContext(StateContext) as StateContextType;
+    const { query, setQuery, querySubmitted, setQuerySubmitted } = useContext(StateContext) as StateContextType;
 
 
     // Set up controlled input

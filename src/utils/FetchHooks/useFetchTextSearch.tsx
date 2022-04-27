@@ -28,7 +28,8 @@ const useFetchTextSearch = (querySubmitted: string, query: string) => {
                     setError(error)
                 })
                 .finally(() => {
-                    setLoading(false)
+                    setTimeout(() => setLoading(false), 1000)
+
                 })
         }
     }, [querySubmitted])

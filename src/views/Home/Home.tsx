@@ -10,8 +10,8 @@ export default function Home() {
 
     // Resets header to homepage if someone clicks on the logo to return to homepage
     function resetHomepage() {
-        setQuerySubmitted(null);
-        setQuery(null);
+        setQuerySubmitted("");
+        setQuery("");
     }
 
     const logo = (

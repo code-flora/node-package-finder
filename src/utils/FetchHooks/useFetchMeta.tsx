@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 const useFetchMeta = (name: string) => {
     const [readme, setReadme] = useState<string | null>(null);
     const [versionsCount, setVersionsCount] = useState<number>(0);
-    const [AversionsArray, setVersionsArray] = useState<[string]>([""]);
     const [uploadDate, setUploadDate] = useState<string>("");
     const [metaLoading, setLoading] = useState<boolean>(true);
     const [metaError, setError] = useState<[] | null>(null);
@@ -29,6 +28,8 @@ const useFetchMeta = (name: string) => {
 
                     //Get all the versions from metadata, and the latest version (for date and readme, if default readme isn't available)
                     versionsArray = Object.keys(data.versions);
+                    setVersionsCount(versionsArray.length);
+
                     let latestVersion = versionsArray.pop()
 
                     // if there is default readme, use it, else, go into the versions to extract that readme
@@ -42,7 +43,6 @@ const useFetchMeta = (name: string) => {
 
                     setReadme(readMe);
                     setUploadDate(publishDate);
-                    setVersionsCount(versionsArray.length);
                 })
                 .catch(error => {
                     setError(error)

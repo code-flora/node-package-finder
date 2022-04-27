@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const useFetchDownloadCount = (name: string) => {
-    const [data, setData] = useState<any | null>();
+    const [data, setData] = useState<any | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<[] | null>(null);
 

@@ -4,7 +4,12 @@ import parse from 'html-react-parser';
 import { marked } from 'marked';
 
 export interface IMainColumnProps {
-    info: any;
+    info: {
+        name: string;
+        keywords?: string[];
+        dependencies?: {};
+        devDependencies?: {};
+    };
     readmeData: string | null;
     value: number;
 }

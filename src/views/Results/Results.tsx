@@ -19,8 +19,10 @@ export default function Results() {
     useEffect(() => {
         if (!query) {
             let searchedQuery = searchParams.get('q')
-            setQuerySubmitted(searchedQuery);
-            setQuery(searchedQuery);
+            if (typeof searchedQuery == 'string') {
+                setQuerySubmitted(searchedQuery);
+                setQuery(searchedQuery);
+            }
         }
     }, [query])
 
@@ -31,15 +33,16 @@ export default function Results() {
     let renderResultCards;
     if (data) {
         renderResultCards = data.objects.map((item: any) => {
+            const { package: thePackage } = item;
             return (
                 <ResultCard
-                    key={item.package.name}
-                    name={item.package.name}
-                    version={item.package.version}
-                    description={item.package.description}
-                    date={item.package.date}
-                    publisher={item.package.publisher.username}
-                    keywords={item.package.keywords}
+                    key={thePackage.name}
+                    name={thePackage.name}
+                    version={thePackage.version}
+                    description={thePackage.description}
+                    date={thePackage.date}
+                    publisher={thePackage.publisher.username}
+                    keywords={thePackage.keywords}
                 />
             )
         })

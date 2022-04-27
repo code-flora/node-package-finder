@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface querySubmittedProps {
-    querySubmitted: boolean;
+    querySubmitted: string;
 }
 
 export const Container = styled.div<querySubmittedProps>`
