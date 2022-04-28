@@ -19,10 +19,9 @@ export default function SearchBar(props: ISearchBarProps) {
 
     // Set up controlled input
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-        // Slow down the update of query to prevent constant re-rendering of results page, i.e. constant fetching
+        // Slow down the update of query to prevent constant re-rendering of results page
         //setTimeout(() => setQuery(event.target.value), 1000);
         setQuery(event.target.value)
-
     }
 
     function handleSubmit(event: any) {

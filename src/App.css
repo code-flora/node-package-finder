@@ -12,13 +12,7 @@
   --main-color: #212b43;
   --sub-color: #62cfe6;
   --sub-alt-color: #ddeff3;
-  --error-color: #f19dac;
   --error-extra-color: #e58c9d;
-  --accent-1: #f19dac;
-  --accent-2: #f6f4a0;
-  --accent-3: #73e4d0;
-  --accent-4: #61cfe6;
-  --accent-5: #ba96db;
 
   /* spacing */
   --between-sections: 20px;
@@ -93,7 +87,7 @@ ol[class] {
 .state-container {
   padding: 10px 20px;
   width: 100vw;
-  min-height: calc(100vh - 85px);
+  min-height: calc(100vh - 70px);
   display: flex;
   flex-direction: column;
   justify-content: center;

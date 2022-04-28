@@ -43,22 +43,20 @@ export default function MainColumn(props: IMainColumnProps) {
     }
 
     // Render dependencies
+    let callbackFn = (dep: string) => {
+        return (
+            <li key={dep} className="li-style"><a href="#" className="link-style" >{dep}</a></li>
+        )
+    };
+
     if (info.dependencies) {
         let depArray = Object.keys(info.dependencies);
-        renderDependencies = depArray.map((dep) => {
-            return (
-                <li key={dep} className="li-style"><a href="#" className="link-style" >{dep}</a></li>
-            )
-        })
+        renderDependencies = depArray.map(callbackFn)
     }
 
     if (info.devDependencies) {
         let devDepArray = Object.keys(info.devDependencies);
-        renderDevDependencies = devDepArray.map((dep) => {
-            return (
-                <li key={dep} className="li-style"><a href="#" className="link-style" >{dep}</a></li>
-            )
-        })
+        renderDevDependencies = devDepArray.map(callbackFn)
     }
 
     return (
@@ -67,10 +65,12 @@ export default function MainColumn(props: IMainColumnProps) {
                 <S.ReadMe>
                     {readmeData ? renderReadme : noReadmeData}
                 </S.ReadMe>
-                <S.Keywords>
-                    <h2>Keywords</h2>
-                    <ul className="ul-style" >{renderKeywords}</ul>
-                </S.Keywords>
+                {info.keywords ? (
+                    <S.Keywords>
+                        <h2>Keywords</h2>
+                        <ul className="ul-style" >{renderKeywords}</ul>
+                    </S.Keywords>
+                ) : null}
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <S.Dependencies>
@@ -80,7 +80,6 @@ export default function MainColumn(props: IMainColumnProps) {
                             <ul className="ul-style">{renderDependencies}</ul>
                         </>
                     ) : null}
-
 
                     {info.devDependencies ? (
                         <>

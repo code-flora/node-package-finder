@@ -10,7 +10,6 @@ import useFetchSpecificPackage from '../../utils/FetchHooks/useFetchSpecificPack
 import convertDateToString from '../../utils/Conversion/convertDateToString';
 import Loading from '../../components/StatePages/Loading/Loading';
 import Error from '../../components/StatePages/Error/Error';
-import useFetchDownloadCount from '../../utils/FetchHooks/useFetchDownloadCount';
 
 export default function Package() {
     // Set states for tab and panels

@@ -40,6 +40,11 @@ export const Container = styled.section`
     }
 `
 export const ReadMe = styled.div`
+    h1 {
+        color: var(--sub-color);
+        font-size: 1.8rem;
+    }
+
     h2 {
         margin-bottom: 10px;
     }
