@@ -19,6 +19,9 @@ export default function Package() {
         setValue(newValue);
     }
 
+    // Get state and setStates from context
+    const { packageInfo, setPackageInfo, setQuery, querySubmitted, setQuerySubmitted } = useContext(StateContext) as StateContextType;
+
     // Hooks
     let params = useParams();
 
@@ -41,10 +44,9 @@ export default function Package() {
                 setPackageInfo({ name: actualPackageName, version })
             }
         }
-    }, [])
+    })
 
-    // Get state and setStates from context
-    const { packageInfo, setPackageInfo, setQuery, querySubmitted, setQuerySubmitted } = useContext(StateContext) as StateContextType;
+
 
     let name: string = packageInfo.name!;
     let version: string = packageInfo.version!;
@@ -54,12 +56,11 @@ export default function Package() {
     const { data, loading, error } = useFetchSpecificPackage(name, version);
     const { metaData, metaLoading, metaError } = useFetchMeta(name);
 
-    // Getting content to be rendered/passed. Add date to packageInfo in context if landing here via url.
+    // Getting content to be rendered/passed. Cannot setPackageInfo(uploadDate) as it needs to be inside a useEffect which at this point, messes things up.
     const { readme, uploadDate, versionsCount } = metaData;
-    useEffect(() => {
-        if (!date) { setPackageInfo({ date: uploadDate }) }
-    })
-
+    if (!date) {
+        date = uploadDate; //using same variable as packageInfo.date for convenience downstream, but this doesn't register into the state. 
+    }
 
     // Convert date to string
     let convertedDate = convertDateToString(date!);

@@ -35,7 +35,7 @@ export const Container = styled.section`
     }
 
     .li-style {
-        display: inline;
+        display: inline-block;
         line-height: 2rem;
     }
 `

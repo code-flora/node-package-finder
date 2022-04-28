@@ -17,6 +17,7 @@ const useFetchTextSearch = (querySubmitted: string, query: string) => {
 
             fetch(endpoint, header)
                 .then(response => {
+                    setLoading(true);
                     if (response.ok) {
                         return response.json()
                     }
@@ -29,7 +30,6 @@ const useFetchTextSearch = (querySubmitted: string, query: string) => {
                 })
                 .finally(() => {
                     setTimeout(() => setLoading(false), 1000)
-
                 })
         }
     }, [querySubmitted])

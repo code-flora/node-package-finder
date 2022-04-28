@@ -30,8 +30,25 @@ export const Install = styled.div`
 `
 
 export const Link = styled.div`
+    width: 100%;
     margin-top: var(--between-sections);
 
+    div {
+        width: calc(100%);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    a {
+        text-decoration: none;
+        color: var(--error-extra-color);
+        transition: color 0.2s ease-in;
+    }
+
+    a:hover {
+        color: var(--main-color);
+    }
 `
 
 export const OtherInfo = styled.div`

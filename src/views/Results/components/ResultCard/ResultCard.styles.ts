@@ -32,7 +32,10 @@ export const PackageName = styled.h1`
     }
 `
 export const PackageDesc = styled.div`
+    width: calc(100%);
     margin-top: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 0.95rem;
 
     @media (min-width: 768px) {
