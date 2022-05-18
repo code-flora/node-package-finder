@@ -43,7 +43,7 @@ export default function ResultCard(props: IResultCardProps) {
     }
 
     return (
-        <S.Container>
+        <S.Container data-testid="result-card">
             <S.StyledPaper elevation={2}>
                 <Link to={`/package/${name}/${version}`} onClick={captureParams}>
                     <S.PackageName>{name}</S.PackageName>

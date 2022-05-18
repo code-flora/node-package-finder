@@ -19,7 +19,7 @@ export default function Home() {
     );
 
     return (
-        <S.Container querySubmitted={querySubmitted}>
+        <S.Container querySubmitted={querySubmitted} data-testid="home-header">
             <S.Title querySubmitted={querySubmitted}>Build amazing things</S.Title>
             <S.HeaderWrap>
                 {querySubmitted ? logo : null}
